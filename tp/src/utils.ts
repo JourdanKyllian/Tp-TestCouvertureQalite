@@ -4,7 +4,14 @@
  * @returns 
  */
 export function capitalize(str: string | null): string {
-    return '';
+    if(!str || str.length === 0){
+        return '';
+    }
+
+    const firstLetter = str.charAt(0).toUpperCase();
+    const restOfWord = str.slice(1).toLowerCase();
+    
+    return firstLetter + restOfWord;
 }
 
 /**
@@ -13,22 +20,47 @@ export function capitalize(str: string | null): string {
  * @returns 
  */
 export function calculateAverage (numbers: number[] | null): number {
-    return 0;
+    if(!numbers || numbers.length === 0){
+        return 0;
+    }
+
+    const sum = numbers.reduce((acc, num) => acc + num, 0);
+    const average = sum / numbers.length;
+
+    return Math.round(average * 100) / 100;
 }
 
 /**
- * Transforme un texte en slug URL : minuscules, espaces remplaces par des tirets, caracteres speciaux supprimes
+ * Transforme un texte en slug URL : minuscules, espaces remplaces par des tirets en retirant les espaces en début et fin, caracteres speciaux supprimes
  * @param text 
- * @returns 
+ * @returns
  */
 export function slugify(text: string | null): string {
-    return '';
+    if (!text || text.length === 0) {
+        return '';
+    }
+
+    // Remplace les espaces par des tirets en enlevant les espaces en début et fin de chaîne
+    return text
+        .toLowerCase()
+        .replace(/[^\w\s]/g, '')
+        .trim()
+        .replace(/ /g, '-');
 }
 
 /**
  * Limite une valeur entre un minimum et un maximum
- * 
+ * @param value
  */
 export function clamp(value: number, min: number, max: number): number {
-    return 0;
+    if (value < min ||value <= min) {
+        const result: number = min;
+        return result;
+    }
+    if (value > max || value >= max) {
+        const result: number = max;
+        return result;
+    }
+
+    return value;
 }

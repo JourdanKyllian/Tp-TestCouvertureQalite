@@ -1,6 +1,7 @@
-import { calculateAverage, capitalize, clamp, slugify } from "src/utils";
+import { calculateAverage, capitalize, clamp, slugify } from "./utils";
 
-/**
+
+/*
  * fonction capitalize(str)
  */
 describe('capitalize', () => {
@@ -30,7 +31,7 @@ describe('capitalize', () => {
   });
 });
 
-/**
+/*
  * fonction calculateAverage(numbers)
  */
 describe('calculateAverage', () => {
@@ -54,7 +55,7 @@ describe('calculateAverage', () => {
   });
   it('should return the exact average when given an array of integers', () => {
     const input = [10, 11, 12];
-    const expected = 11.33;
+    const expected = 11;
     const result = calculateAverage(input);
     expect(result).toBe(expected);
   });
@@ -64,14 +65,19 @@ describe('calculateAverage', () => {
     const result = calculateAverage(input);
     expect(result).toBe(expected);
   });
+  it('should return decimal when array give decimal', () => {
+    const input = [1, 2, 7];
+    const expected = 3.33;
+    const result = calculateAverage(input);
+    expect(result).toBe(expected);
+  })
 });
 
-/**
+/*
  * fonction slugify(text)
  */
 describe('slugify', () => {
   it('should return the string as a slug when it is not', () => {
-    expect(slugify('Hello World')).toBe('hello-world');
     const input = 'Hello World';
     const expected = 'hello-world';
     const result = slugify(input);
@@ -97,7 +103,7 @@ describe('slugify', () => {
   });
 });
 
-/**
+/*
  * fonction clamp(value, min, max)
  */
 describe('clamp', () => {
