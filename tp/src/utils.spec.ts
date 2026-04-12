@@ -1,6 +1,5 @@
 import { calculateAverage, capitalize, clamp, slugify } from "./utils";
 
-
 /*
  * fonction capitalize(str)
  */
@@ -48,7 +47,7 @@ describe('calculateAverage', () => {
     expect(result).toBe(expected);
   })
   it('should return 0 when the array is empty', () => {
-    const input = [];
+    const input: number[] = [];
     const expected = 0;
     const result = calculateAverage(input);
     expect(result).toBe(expected);
