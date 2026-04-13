@@ -39,6 +39,11 @@ describe('isValidEmail', () => {
     const result = isValidEmail(input);
     expect(result).toBe(false);
   });
+  it('should return false when the email has two @', () => {
+    const input = 'user@e@xample.com'
+    const result = isValidEmail(input);
+    expect(result).toBe(false);
+  });
 });
 
 /*
