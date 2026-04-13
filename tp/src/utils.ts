@@ -1,4 +1,19 @@
 /**
+ * Classe représentant un étudiant
+ */
+export class Student {
+  name: string;
+  grade: number;
+  age: number;
+
+  constructor(name: string, grade: number, age: number) {
+    this.name = name;
+    this.grade = grade;
+    this.age = age;
+  }
+}
+
+/**
  * Met la premiere lettre en majuscule, le reste en minuscule
  * @param str 
  * @returns 
@@ -32,7 +47,7 @@ export function calculateAverage (numbers: number[] | null): number {
 
 /**
  * Transforme un texte en slug URL : minuscules, espaces remplaces par des tirets en retirant les espaces en début et fin, caracteres speciaux supprimes
- * @param text 
+ * @param text
  * @returns
  */
 export function slugify(text: string | null): string {
@@ -50,7 +65,10 @@ export function slugify(text: string | null): string {
 
 /**
  * Limite une valeur entre un minimum et un maximum
- * @param value
+ * @param value 
+ * @param min 
+ * @param max 
+ * @returns
  */
 export function clamp(value: number, min: number, max: number): number {
     if (value < min ||value <= min) {
@@ -64,3 +82,27 @@ export function clamp(value: number, min: number, max: number): number {
 
     return value;
 }
+
+/**
+ * Trie un tableau d'étudiants par un ordre donné
+ * @param students
+ */
+export function sortStudents(students: Student[] | null, sortBy: keyof Student, order: 'asc' | 'desc' = 'asc'): Student[] {
+    if (!students || students.length === 0 || students[0] === null) {
+        return [];
+    }
+
+    const result = [...students];
+
+    result.sort((a, b) => {
+        const valA = a[sortBy];
+        const valB = b[sortBy];
+        
+        if (valA < valB) {return order === 'asc' ? -1 : 1;}
+        if (valA > valB) {return order === 'asc' ? 1 : -1;}
+
+        return 0;
+    });
+    
+    return result;
+};
