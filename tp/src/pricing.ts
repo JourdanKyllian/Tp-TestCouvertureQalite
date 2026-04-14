@@ -6,6 +6,9 @@ export function calculateDeliveryFee(distance: number, weight: number): number |
     if (distance > 3) {
         fee += (distance - 3) * 0.50;
     }
-    
+    if (weight > 5) {
+        fee += 1.50;
+    }
+
     return fee;
 }

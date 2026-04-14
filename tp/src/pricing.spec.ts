@@ -7,4 +7,7 @@ describe('calculateDeliveryFee', () => {
     it('should add 0.50€ per km for distance between 3km and 10km', () => {
         expect(calculateDeliveryFee(6, 2)).toBe(3.50);
     });
+    it('should add 1.50€ supplement when weight is greater than 5kg', () => {
+        expect(calculateDeliveryFee(5, 8)).toBe(4.50);
+    });
 });
