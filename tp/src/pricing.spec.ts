@@ -1,4 +1,4 @@
-import { calculateDeliveryFee } from './pricing';
+import { applyPromoCode, calculateDeliveryFee, PromoCode } from './pricing';
 
 describe('calculateDeliveryFee', () => {
     it('should return 2.00 for a distance <= 3km and weight <= 5kg', () => {
@@ -37,5 +37,18 @@ describe('calculateDeliveryFee', () => {
     });
     it('should calculate correctly for 10km and 6kg', () => {
         expect(calculateDeliveryFee(10, 6)).toBe(7.00);
-    })
+    });
+});
+
+describe('applyPromoCode', () => {
+    const mockPromos: PromoCode[] = [{
+        "code": "BIENVENUE20",
+        "type": "percentage",
+        "value": 20,
+        "minOrder": 15.00,
+        "expiresAt": "2026-12-31"
+    }];
+    it('should apply a 20% discount on a 50€ order', () => {
+        expect(applyPromoCode(50, 'BIENVENUE20', mockPromos)).toBe(40);
+    });
 });

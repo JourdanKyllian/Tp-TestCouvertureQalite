@@ -1,6 +1,14 @@
 export const BASE_FEE = 2.00;
 export const MAX_DISTANCE = 10;
 
+export interface PromoCode {
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minOrder: number;
+  expiresAt: string;
+}
+
 export function calculateDeliveryFee(distance: number, weight: number): number | null {
     if(distance < 0 || weight < 0) {
         throw new Error('Distance or weight cannot be negative');
@@ -19,4 +27,17 @@ export function calculateDeliveryFee(distance: number, weight: number): number |
     }
 
     return fee;
+}
+
+export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[]): number {
+    const promo = promoCodes.find((p) => p.code === promoCode);
+
+    if (!promo) {throw new Error('Code inconnu');}
+    let finalTotal = subtotal;
+    
+    if (promo.type === 'percentage') {
+        finalTotal = subtotal * (1 - promo.value / 100);
+    }
+
+    return finalTotal;
 }
