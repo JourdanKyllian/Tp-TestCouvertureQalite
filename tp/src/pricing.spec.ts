@@ -94,4 +94,14 @@ describe('applyPromoCode', () => {
         }];
         expect(() => applyPromoCode(100, 'EXPIRE', promos)).toThrow('Promo expirée');
     });
+    it('should not return a negative total if the discount exceeds the subtotal', () => {
+        const promos: PromoCode[] = [{
+            code: 'REDUC50',
+            type: 'fixed',
+            value: 50,
+            minOrder: 0,
+            expiresAt: tomorrowDate
+        }];
+        expect(applyPromoCode(30, 'REDUC50', promos)).toBe(0);
+    });
 });
