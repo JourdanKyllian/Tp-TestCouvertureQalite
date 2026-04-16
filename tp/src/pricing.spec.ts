@@ -1,4 +1,4 @@
-import { applyPromoCode, calculateDeliveryFee, PromoCode } from './pricing';
+import { applyPromoCode, calculateDeliveryFee, calculateSurge, PromoCode } from './pricing';
 
 /**
  * calculateDeliveryFee(distance: number, weight: number)
@@ -139,5 +139,14 @@ describe('applyPromoCode', () => {
     });
     it('should throw an error if subtotal is negative', () => {
         expect(() => applyPromoCode(-10, 'BIENVENUE20', [])).toThrow();
+    });
+});
+
+describe('calculateSurge', () => {
+    it('should return 0 when the shop is closed (before 10h)', () => {
+        expect(calculateSurge(9.5, 'Lundi')).toBe(0);
+    });
+    it('should return 0 when the shop is closed (after 22h)', () => {
+        expect(calculateSurge(22.5, 'Mardi')).toBe(0);
     });
 });

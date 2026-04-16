@@ -9,6 +9,12 @@ export interface PromoCode {
   expiresAt: string;
 }
 
+/**
+ * calculateDeliveryFee
+ * @param distance 
+ * @param weight 
+ * @returns 
+ */
 export function calculateDeliveryFee(distance: number, weight: number): number | null {
     if(distance < 0 || weight < 0) {
         throw new Error('Distance or weight cannot be negative');
@@ -29,6 +35,13 @@ export function calculateDeliveryFee(distance: number, weight: number): number |
     return fee;
 }
 
+/**
+ * applyPromoCode
+ * @param subtotal 
+ * @param promoCode 
+ * @param promoCodes 
+ * @returns 
+ */
 export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[]): number {
     if (subtotal < 0) {throw new Error('Le sous-total ne peut pas être négatif');}
     const promo = promoCodes.find((p) => p.code === promoCode);
@@ -52,4 +65,19 @@ export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: 
     }
 
     return Math.max(0, finalTotal);
+}
+
+export type DayOfWeek = 'Lundi' | 'Mardi' | 'Mercredi' | 'Jeudi' | 'Vendredi' | 'Samedi' | 'Dimanche';
+
+/**
+ * calculateSurge
+ * @param hour
+ * @param dayOfWeek
+ */
+export function calculateSurge(hour: number, dayOfWeek: DayOfWeek): number {
+    if (hour < 10 || hour > 22) {
+        return 0;
+    }
+
+    return 1.0;
 }
