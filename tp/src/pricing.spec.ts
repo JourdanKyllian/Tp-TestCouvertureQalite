@@ -164,5 +164,19 @@ describe('calculateSurge', () => {
     it('should return 1.8 for Friday 21h00', () => {
         expect(calculateSurge(21, 'Vendredi')).toBe(1.8);
     });
-
+    it('should be closed exactly at 22h01', () => {
+        expect(calculateSurge(22.01, 'Lundi')).toBe(0);
+    });
+    it('should be closed exactly at 9h59', () => {
+        expect(calculateSurge(9.99, 'Lundi')).toBe(0);
+    });
+    it('should be open exactly at 10h00', () => {
+        expect(calculateSurge(10, 'Lundi')).toBe(1.0);
+    });
+    it('should be open exactly at 22h00', () => {
+        expect(calculateSurge(22, 'Lundi')).toBe(1.0);
+    });
+    it('should the price still be normal or is it already lunchtime', () => {
+        expect(calculateSurge(11.5, 'Lundi')).toBe(1.0);
+    });
 });
