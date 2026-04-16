@@ -31,18 +31,25 @@ export function calculateDeliveryFee(distance: number, weight: number): number |
 
 export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[]): number {
     const promo = promoCodes.find((p) => p.code === promoCode);
+    if (!promo) { throw new Error('Code inconnu'); }
+
+    const now = new Date();
+    const expiryDate = new Date(promo.expiresAt);
 
     if (!promo) {throw new Error('Code inconnu');}
     let finalTotal = subtotal;
-    
+
+    if (now > expiryDate) {
+        throw new Error('Promo expirée');
+    }
+    if (promo.minOrder > subtotal) {
+        throw new Error('Promo non applicable');
+    }
     if (promo.type === 'percentage') {
         finalTotal = subtotal * (1 - promo.value / 100);
     }
     if (promo.type === 'fixed') {
         finalTotal = subtotal - promo.value;
-    }
-    if (promo.minOrder > subtotal) {
-        throw new Error('Promo non applicable');
     }
 
     return finalTotal;

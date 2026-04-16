@@ -47,13 +47,20 @@ describe('calculateDeliveryFee', () => {
  * applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[])
  */
 describe('applyPromoCode', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowDate = tomorrow.toISOString();
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayDate = yesterday.toISOString();
     it('should apply a 20% discount on a 50€ order', () => {
         const promos: PromoCode[] = [{
             "code": "BIENVENUE20",
             "type": "percentage",
             "value": 20,
             "minOrder": 15.00,
-            "expiresAt": "2026-12-31"
+            "expiresAt": tomorrowDate
         }];
         expect(applyPromoCode(50, 'BIENVENUE20', promos)).toBe(40);
     });
@@ -63,7 +70,7 @@ describe('applyPromoCode', () => {
             type: 'fixed',
             value: 5,
             minOrder: 0,
-            expiresAt: '2026-12-31'
+            expiresAt: tomorrowDate
         }];
         expect(applyPromoCode(30, 'REDUC5', promos)).toBe(25);
     });
@@ -73,8 +80,18 @@ describe('applyPromoCode', () => {
             type: 'fixed',
             value: 5,
             minOrder: 20,
-            expiresAt: '2026-12-31'
+            expiresAt: tomorrowDate
         }];
         expect(() => applyPromoCode(15, 'MINI20', promos)).toThrow();
+    });
+    it('should throw an error if the promo code is expired', () => {
+        const promos: PromoCode[] = [{
+            code: 'EXPIRE',
+            type: 'percentage',
+            value: 10,
+            minOrder: 0,
+            expiresAt: yesterdayDate
+        }];
+        expect(() => applyPromoCode(100, 'EXPIRE', promos)).toThrow('Promo expirée');
     });
 });
