@@ -137,4 +137,7 @@ describe('applyPromoCode', () => {
         }];
         expect(applyPromoCode(0, 'REDUC5', promos)).toBe(0);
     });
+    it('should throw an error if subtotal is negative', () => {
+        expect(() => applyPromoCode(-10, 'BIENVENUE20', [])).toThrow();
+    });
 });
