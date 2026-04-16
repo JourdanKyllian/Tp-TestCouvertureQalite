@@ -51,4 +51,15 @@ describe('applyPromoCode', () => {
     it('should apply a 20% discount on a 50€ order', () => {
         expect(applyPromoCode(50, 'BIENVENUE20', mockPromos)).toBe(40);
     });
+    it('should apply a fixed discount of 5€ on a 30€ order', () => {
+        const promos: PromoCode[] = [{
+            code: 'REDUC5',
+            type: 'fixed',
+            value: 5,
+            minOrder: 0,
+            expiresAt: '2026-12-31'
+        }];
+        expect(applyPromoCode(30, 'REDUC5', promos)).toBe(25);
+    });
+    
 });

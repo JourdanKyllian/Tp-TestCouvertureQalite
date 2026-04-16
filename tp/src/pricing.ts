@@ -38,6 +38,9 @@ export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: 
     if (promo.type === 'percentage') {
         finalTotal = subtotal * (1 - promo.value / 100);
     }
-
+    if (promo.type === 'fixed') {
+        finalTotal = subtotal - promo.value;
+    }
+    
     return finalTotal;
 }
