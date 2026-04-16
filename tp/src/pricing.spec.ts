@@ -107,4 +107,14 @@ describe('applyPromoCode', () => {
         }];
         expect(applyPromoCode(30, 'REDUC50', promos)).toBe(0);
     });
+    it('should return 0€ for a 100% discount', () => {
+        const promos: PromoCode[] = [{
+            code: 'GRATUIT',
+            type: 'percentage',
+            value: 100,
+            minOrder: 0,
+            expiresAt: tomorrowDate
+        }];
+        expect(applyPromoCode(50, 'GRATUIT', promos)).toBe(0);
+    });
 });
