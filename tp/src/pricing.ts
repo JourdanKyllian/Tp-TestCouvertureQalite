@@ -82,5 +82,11 @@ export function calculateSurge(hour: number, dayOfWeek: DayOfWeek): number {
         return 1.2;
     }
 
+    const isWeekDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi'].includes(dayOfWeek);
+
+    if (isWeekDay && hour >= 12 && hour <= 13.5) {
+        return 1.3;
+    }
+
     return 1.0;
 }

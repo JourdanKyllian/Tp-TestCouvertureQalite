@@ -152,4 +152,7 @@ describe('calculateSurge', () => {
     it('should return 1.2 for Sunday all day (e.g., 14h)', () => {
         expect(calculateSurge(14, 'Dimanche')).toBe(1.2);
     });
+    it('should return 1.3 for lunch surge (Tuesday 12h30)', () => {
+        expect(calculateSurge(12.5, 'Mardi')).toBe(1.3);
+    });
 });
