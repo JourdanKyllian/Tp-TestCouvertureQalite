@@ -54,6 +54,9 @@ describe('applyPromoCode', () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayDate = yesterday.toISOString();
+    it('should throw an error for an unknown promo code', () => {
+        expect(() => applyPromoCode(50, 'CODE_INEXISTANT', [])).toThrow('Code inconnu');
+    });
     it('should apply a 20% discount on a 50€ order', () => {
         const promos: PromoCode[] = [{
             "code": "BIENVENUE20",
