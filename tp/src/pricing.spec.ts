@@ -127,4 +127,14 @@ describe('applyPromoCode', () => {
         }];
         expect(applyPromoCode(20, 'MINI20', promos)).toBe(15);
     });
+    it('should return 0 if subtotal is 0', () => {
+        const promos: PromoCode[] = [{
+            code: 'REDUC5',
+            type: 'fixed',
+            value: 5,
+            minOrder: 0,
+            expiresAt: tomorrowDate
+        }];
+        expect(applyPromoCode(0, 'REDUC5', promos)).toBe(0);
+    });
 });
