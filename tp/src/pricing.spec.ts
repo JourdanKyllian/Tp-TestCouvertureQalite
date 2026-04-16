@@ -149,4 +149,7 @@ describe('calculateSurge', () => {
     it('should return 0 when the shop is closed (after 22h)', () => {
         expect(calculateSurge(22.5, 'Mardi')).toBe(0);
     });
+    it('should return 1.2 for Sunday all day (e.g., 14h)', () => {
+        expect(calculateSurge(14, 'Dimanche')).toBe(1.2);
+    });
 });

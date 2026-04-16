@@ -78,6 +78,9 @@ export function calculateSurge(hour: number, dayOfWeek: DayOfWeek): number {
     if (hour < 10 || hour > 22) {
         return 0;
     }
+    if (dayOfWeek === 'Dimanche') {
+        return 1.2;
+    }
 
     return 1.0;
 }
