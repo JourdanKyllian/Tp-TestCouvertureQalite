@@ -41,6 +41,9 @@ export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: 
     if (promo.type === 'fixed') {
         finalTotal = subtotal - promo.value;
     }
-    
+    if (promo.minOrder > subtotal) {
+        throw new Error('Promo non applicable');
+    }
+
     return finalTotal;
 }

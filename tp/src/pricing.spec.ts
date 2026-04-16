@@ -1,5 +1,8 @@
 import { applyPromoCode, calculateDeliveryFee, PromoCode } from './pricing';
 
+/**
+ * calculateDeliveryFee(distance: number, weight: number)
+ */
 describe('calculateDeliveryFee', () => {
     it('should return 2.00 for a distance <= 3km and weight <= 5kg', () => {
         expect(calculateDeliveryFee(2, 1)).toBe(2.00);
@@ -40,16 +43,19 @@ describe('calculateDeliveryFee', () => {
     });
 });
 
+/**
+ * applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[])
+ */
 describe('applyPromoCode', () => {
-    const mockPromos: PromoCode[] = [{
-        "code": "BIENVENUE20",
-        "type": "percentage",
-        "value": 20,
-        "minOrder": 15.00,
-        "expiresAt": "2026-12-31"
-    }];
     it('should apply a 20% discount on a 50€ order', () => {
-        expect(applyPromoCode(50, 'BIENVENUE20', mockPromos)).toBe(40);
+        const promos: PromoCode[] = [{
+            "code": "BIENVENUE20",
+            "type": "percentage",
+            "value": 20,
+            "minOrder": 15.00,
+            "expiresAt": "2026-12-31"
+        }];
+        expect(applyPromoCode(50, 'BIENVENUE20', promos)).toBe(40);
     });
     it('should apply a fixed discount of 5€ on a 30€ order', () => {
         const promos: PromoCode[] = [{
@@ -61,5 +67,14 @@ describe('applyPromoCode', () => {
         }];
         expect(applyPromoCode(30, 'REDUC5', promos)).toBe(25);
     });
-    
+    it('should refuse the code if subtotal is below minOrder', () => {
+        const promos: PromoCode[] = [{
+            code: 'MINI20',
+            type: 'fixed',
+            value: 5,
+            minOrder: 20,
+            expiresAt: '2026-12-31'
+        }];
+        expect(() => applyPromoCode(15, 'MINI20', promos)).toThrow();
+    });
 });
