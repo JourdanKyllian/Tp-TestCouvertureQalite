@@ -152,7 +152,17 @@ describe('calculateSurge', () => {
     it('should return 1.2 for Sunday all day (e.g., 14h)', () => {
         expect(calculateSurge(14, 'Dimanche')).toBe(1.2);
     });
-    it('should return 1.3 for lunch surge (Tuesday 12h30)', () => {
-        expect(calculateSurge(12.5, 'Mardi')).toBe(1.3);
+    it('should return 1.0 for breakfast surge (Tuesday 15h00)', () => {
+        expect(calculateSurge(15, 'Mardi')).toBe(1.0);
     });
+    it('should return 1.3 for lunch surge (Wednesday 12h30)', () => {
+        expect(calculateSurge(12.5, 'Mercredi')).toBe(1.3);
+    });
+    it('should return 1.5 for dinner surge (Thursday 20h00)', () => {
+        expect(calculateSurge(20, 'Jeudi')).toBe(1.5);
+    });
+    it('should return 1.8 for Friday 21h00', () => {
+        expect(calculateSurge(21, 'Vendredi')).toBe(1.8);
+    });
+
 });
