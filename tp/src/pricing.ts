@@ -96,3 +96,46 @@ export function calculateSurge(hour: number, dayOfWeek: DayOfWeek): number {
 
     return 1.0;
 }
+
+export const PROMO_CODES: PromoCode[] = [
+    {
+        code: "BIENVENUE20",
+        type: "percentage",
+        value: 20,
+        minOrder: 15.00,
+        expiresAt: "2026-12-31"
+    }
+];
+
+export interface OrderItem {
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface OrderTotal {
+  subtotal: number;
+  discount: number;
+  deliveryFee: number;
+  surge: number;
+  total: number;
+}
+
+/**
+ * calculateOrderTotal
+ * @param items 
+ * @param distance 
+ * @param weight 
+ * @param promoCode 
+ * @param hour 
+ * @param dayOfWeek 
+ * @returns 
+ */
+export function calculateOrderTotal(items: OrderItem[], distance: number, weight: number, promoCode: string | null, hour: number, dayOfWeek: DayOfWeek): OrderTotal {
+    const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const deliveryFee = calculateDeliveryFee(distance, weight) || 0;
+    const surge = calculateSurge(hour, dayOfWeek);
+    const total = subtotal + deliveryFee * surge;
+
+    return { subtotal, discount: 0, deliveryFee, surge, total };
+}

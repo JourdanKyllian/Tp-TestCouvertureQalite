@@ -1,4 +1,4 @@
-import { applyPromoCode, calculateDeliveryFee, calculateSurge, PromoCode } from './pricing';
+import { applyPromoCode, calculateDeliveryFee, calculateOrderTotal, calculateSurge, PromoCode } from './pricing';
 
 /**
  * calculateDeliveryFee(distance: number, weight: number)
@@ -178,5 +178,21 @@ describe('calculateSurge', () => {
     });
     it('should the price still be normal or is it already lunchtime', () => {
         expect(calculateSurge(11.5, 'Lundi')).toBe(1.0);
+    });
+});
+
+describe(calculateOrderTotal, () => {
+    const items = [{ name: "Pizza", price: 12.50, quantity: 2 }];
+    
+    it('should calculate the correct total for a simple order (25€ + 5km + Tuesday 15h)', () => {
+        const result = calculateOrderTotal(items, 5, 1, null, 15, 'Mardi');
+        
+        expect(result).toEqual({
+            subtotal: 25.00,
+            discount: 0,
+            deliveryFee: 3.00,
+            surge: 1.0,
+            total: 28.00
+        });
     });
 });
