@@ -217,6 +217,17 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Promo non applicable');
         });
+        it('should return 404 for an unknown promo code', async () => {
+            const response = await request(app)
+                .post('/promo/validate')
+                .send({
+                    promoCode: 'CODE_FANTOME',
+                    subtotal: 50
+                });
+
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe('Code inconnu');
+        });
     });
 });
 

@@ -91,6 +91,11 @@ app.post('/promo/validate', (req: Request, res: Response) => {
             newPrice: newPrice
         });
     } catch (error: any) {
+        // Si l'erreur est "Code inconnu", on renvoie 404 comme demandé
+        if (error.message === 'Code inconnu') {
+            return res.status(404).json({ error: error.message });
+        }
+        // Pour les autres erreurs (expiré, minimum...), on reste sur 400
         res.status(400).json({ error: error.message });
     }
 });
