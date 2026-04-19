@@ -132,7 +132,12 @@ export interface OrderTotal {
  * @returns 
  */
 export function calculateOrderTotal(items: OrderItem[], distance: number, weight: number, promoCode: string | null, hour: number, dayOfWeek: DayOfWeek): OrderTotal {
-    const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = items.reduce((total, item) => {
+        if (item.price < 0) {
+            throw new Error('Prix négatif');
+        }
+        return total + item.price * item.quantity;
+    }, 0);
 
     let discount = 0;
     if (promoCode) {

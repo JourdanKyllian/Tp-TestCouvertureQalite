@@ -201,4 +201,9 @@ describe(calculateOrderTotal, () => {
         expect(result.discount).toBe(5.00);
         expect(result.total).toBe(23.00);
     });
+    it('should throw an error if an item has a negative price', () => {
+        const itemsWithBug = [{ name: "Pizza Bug", price: -10, quantity: 1 }];
+        expect(() => calculateOrderTotal(itemsWithBug, 5, 1, null, 15, 'Mardi'))
+            .toThrow('Prix négatif');
+    });
 });
