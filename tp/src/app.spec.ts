@@ -78,6 +78,40 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Boutique fermée');
         });
+        it('should apply 20% discount with a valid promo code', async () => {
+            const response = await request(app)
+                .post('/orders/simulate')
+                .send({ 
+                    items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+                    distance: 5,
+                    weight: 1,
+                    promoCode: 'BIENVENUE20',
+                    hour: 15,
+                    dayOfWeek: 'Mardi'
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body.subtotal).toBe(25.00);
+            expect(response.body.discount).toBe(5.00);
+            expect(response.body.total).toBe(23.00);
+        });
+        it('should apply weekend surge (1.8x) on Friday 20h', async () => {
+            const response = await request(app)
+                .post('/orders/simulate')
+                .send({ 
+                    items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+                    distance: 5,
+                    weight: 1,
+                    promoCode: null,
+                    hour: 20,
+                    dayOfWeek: 'Vendredi'
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body.deliveryFee).toBe(3.00);
+            expect(response.body.surge).toBe(1.8);
+            expect(response.body.total).toBe(30.40);
+        });
     });
 });
 
