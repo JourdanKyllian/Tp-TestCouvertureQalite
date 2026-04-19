@@ -151,11 +151,16 @@ export function calculateOrderTotal(items: OrderItem[], distance: number, weight
         discount = subtotal - totalAfterPromo;
     }
 
-    const deliveryFee = calculateDeliveryFee(distance, weight) || 0;
+    const deliveryFee = calculateDeliveryFee(distance, weight);
+    if (deliveryFee === null) {
+        throw new Error('Hors zone de livraison');
+    }
+
     const surge = calculateSurge(hour, dayOfWeek);
     if (surge === 0) {
         throw new Error('Boutique fermée');
     }
+    
     
     const total = (subtotal - discount) + deliveryFee * surge;
 

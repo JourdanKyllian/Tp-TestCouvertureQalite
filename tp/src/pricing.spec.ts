@@ -219,4 +219,8 @@ describe(calculateOrderTotal, () => {
         expect(() => calculateOrderTotal(items, 5, 1, null, 23, 'Lundi'))
             .toThrow('Boutique fermée');
     });
+    it('should throw an error if the delivery distance is out of bounds (e.g., 15km)', () => {
+        expect(() => calculateOrderTotal(items, 15, 1, null, 15, 'Lundi'))
+            .toThrow('Hors zone de livraison');
+    });
 });
