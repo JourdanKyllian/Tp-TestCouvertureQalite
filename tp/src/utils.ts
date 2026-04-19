@@ -15,34 +15,34 @@ export class Student {
 
 /**
  * Met la premiere lettre en majuscule, le reste en minuscule
- * @param str 
- * @returns 
+ * @param str
+ * @returns
  */
 export function capitalize(str: string | null): string {
-    if(!str || str.length === 0){
-        return '';
-    }
+  if (!str || str.length === 0) {
+    return '';
+  }
 
-    const firstLetter = str.charAt(0).toUpperCase();
-    const restOfWord = str.slice(1).toLowerCase();
-    
-    return firstLetter + restOfWord;
+  const firstLetter = str.charAt(0).toUpperCase();
+  const restOfWord = str.slice(1).toLowerCase();
+
+  return firstLetter + restOfWord;
 }
 
 /**
  * Calcule la moyenne d'un tableau de nombres, arrondie a 2 decimales
- * @param numbers 
- * @returns 
+ * @param numbers
+ * @returns
  */
-export function calculateAverage (numbers: number[] | null): number {
-    if(!numbers || numbers.length === 0){
-        return 0;
-    }
+export function calculateAverage(numbers: number[] | null): number {
+  if (!numbers || numbers.length === 0) {
+    return 0;
+  }
 
-    const sum = numbers.reduce((acc, num) => acc + num, 0);
-    const average = sum / numbers.length;
+  const sum = numbers.reduce((acc, num) => acc + num, 0);
+  const average = sum / numbers.length;
 
-    return Math.round(average * 100) / 100;
+  return Math.round(average * 100) / 100;
 }
 
 /**
@@ -51,58 +51,66 @@ export function calculateAverage (numbers: number[] | null): number {
  * @returns
  */
 export function slugify(text: string | null): string {
-    if (!text || text.length === 0) {
-        return '';
-    }
+  if (!text || text.length === 0) {
+    return '';
+  }
 
-    // Remplace les espaces par des tirets en enlevant les espaces en début et fin de chaîne
-    return text
-        .toLowerCase()
-        .replace(/[^\w\s]/g, '')
-        .trim()
-        .replace(/ /g, '-');
+  // Remplace les espaces par des tirets en enlevant les espaces en début et fin de chaîne
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, '')
+    .trim()
+    .replace(/ /g, '-');
 }
 
 /**
  * Limite une valeur entre un minimum et un maximum
- * @param value 
- * @param min 
- * @param max 
+ * @param value
+ * @param min
+ * @param max
  * @returns
  */
 export function clamp(value: number, min: number, max: number): number {
-    if (value < min ||value <= min) {
-        const result: number = min;
-        return result;
-    }
-    if (value > max || value >= max) {
-        const result: number = max;
-        return result;
-    }
+  if (value < min || value <= min) {
+    const result: number = min;
+    return result;
+  }
+  if (value > max || value >= max) {
+    const result: number = max;
+    return result;
+  }
 
-    return value;
+  return value;
 }
 
 /**
  * Trie un tableau d'étudiants par un ordre donné
  * @param students
  */
-export function sortStudents(students: Student[] | null, sortBy: keyof Student, order: 'asc' | 'desc' = 'asc'): Student[] {
-    if (!students || students.length === 0 || students[0] === null) {
-        return [];
+export function sortStudents(
+  students: Student[] | null,
+  sortBy: keyof Student,
+  order: 'asc' | 'desc' = 'asc',
+): Student[] {
+  if (!students || students.length === 0 || students[0] === null) {
+    return [];
+  }
+
+  const result = [...students];
+
+  result.sort((a, b) => {
+    const valA = a[sortBy];
+    const valB = b[sortBy];
+
+    if (valA < valB) {
+      return order === 'asc' ? -1 : 1;
+    }
+    if (valA > valB) {
+      return order === 'asc' ? 1 : -1;
     }
 
-    const result = [...students];
+    return 0;
+  });
 
-    result.sort((a, b) => {
-        const valA = a[sortBy];
-        const valB = b[sortBy];
-        
-        if (valA < valB) {return order === 'asc' ? -1 : 1;}
-        if (valA > valB) {return order === 'asc' ? 1 : -1;}
-
-        return 0;
-    });
-    
-    return result;
-};
+  return result;
+}

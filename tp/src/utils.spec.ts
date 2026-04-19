@@ -1,4 +1,11 @@
-import { calculateAverage, capitalize, clamp, slugify, sortStudents, Student } from "./utils";
+import {
+  calculateAverage,
+  capitalize,
+  clamp,
+  slugify,
+  sortStudents,
+  Student,
+} from './utils';
 
 /*
  * fonction capitalize(str)
@@ -24,7 +31,7 @@ describe('capitalize', () => {
     const result = capitalize(input);
 
     expect(result).toBe(expected);
-  })
+  });
   it('should return an empty string when the input is null', () => {
     const input = null;
     const expected = '';
@@ -51,7 +58,7 @@ describe('calculateAverage', () => {
     const result = calculateAverage(input);
 
     expect(result).toBe(expected);
-  })
+  });
   it('should return 0 when the array is empty', () => {
     const input: number[] = [];
     const expected = 0;
@@ -79,7 +86,7 @@ describe('calculateAverage', () => {
     const result = calculateAverage(input);
 
     expect(result).toBe(expected);
-  })
+  });
 });
 
 /*
@@ -92,7 +99,7 @@ describe('slugify', () => {
     const result = slugify(input);
 
     expect(result).toBe(expected);
-  })
+  });
   it('should return the string without spaces when it contains spaces', () => {
     const input = ' Spaces Everywhere ';
     const expected = 'spaces-everywhere';
@@ -101,7 +108,7 @@ describe('slugify', () => {
     expect(result).toBe(expected);
   });
   it('should return the string without special characters when it contains special characters', () => {
-    const input = 'C\'est l\'ete !';
+    const input = "C'est l'ete !";
     const expected = 'cest-lete';
     const result = slugify(input);
 
@@ -158,7 +165,6 @@ describe('clamp', () => {
   });
 });
 
-
 /*
  * fonction Sort(students, sortBy, order)
  */
@@ -176,10 +182,7 @@ describe('sortStudents', () => {
     expect(result).toEqual([]);
   });
   it('should sort students by grade ascending', () => {
-    const input = [
-        new Student('Alice', 15, 20),
-        new Student('Bob', 10, 22)
-    ];
+    const input = [new Student('Alice', 15, 20), new Student('Bob', 10, 22)];
     const result = sortStudents(input, 'grade', 'asc');
 
     expect(result).toHaveLength(2);
@@ -187,10 +190,7 @@ describe('sortStudents', () => {
     expect(result[1].name).toBe('Alice');
   });
   it('should sort students by grade descending', () => {
-    const input = [
-        new Student('Alice', 15, 20),
-        new Student('Bob', 10, 22)
-    ];
+    const input = [new Student('Alice', 15, 20), new Student('Bob', 10, 22)];
     const result = sortStudents(input, 'grade', 'desc');
 
     expect(result).toHaveLength(2);
@@ -198,10 +198,7 @@ describe('sortStudents', () => {
     expect(result[1].name).toBe('Bob');
   });
   it('should sort students by name ascending', () => {
-    const input = [
-        new Student('Alice', 15, 20),
-        new Student('Bob', 10, 22)
-    ];
+    const input = [new Student('Alice', 15, 20), new Student('Bob', 10, 22)];
     const result = sortStudents(input, 'name', 'asc');
 
     expect(result).toHaveLength(2);
@@ -210,9 +207,9 @@ describe('sortStudents', () => {
   });
   it('should sort students by age ascending', () => {
     const input = [
-        new Student('Alice', 15, 20),
-        new Student('Bob', 10, 22),
-        new Student('Charlie', 17, 19)
+      new Student('Alice', 15, 20),
+      new Student('Bob', 10, 22),
+      new Student('Charlie', 17, 19),
     ];
     const result = sortStudents(input, 'age', 'asc');
 
@@ -220,23 +217,23 @@ describe('sortStudents', () => {
     expect(result[0].name).toBe('Charlie');
     expect(result[1].name).toBe('Alice');
     expect(result[2].name).toBe('Bob');
-  })
+  });
   it('should not modify the original array', () => {
     const input = [
-        new Student('Alice', 15, 20),
-        new Student('Bob', 10, 22),
-        new Student('Charlie', 17, 24)
+      new Student('Alice', 15, 20),
+      new Student('Bob', 10, 22),
+      new Student('Charlie', 17, 24),
     ];
     sortStudents(input, 'grade', 'asc');
 
     expect(input).toHaveLength(3);
     expect(input[0].name).toBe('Alice');
-  })
+  });
   it('should default to ascending order', () => {
     const input = [
-        new Student('Alice', 15, 20),
-        new Student('Bob', 10, 22),
-        new Student('Charlie', 17, 24)
+      new Student('Alice', 15, 20),
+      new Student('Bob', 10, 22),
+      new Student('Charlie', 17, 24),
     ];
     const result = sortStudents(input, 'grade');
 
@@ -244,5 +241,5 @@ describe('sortStudents', () => {
     expect(result[0].name).toBe('Bob');
     expect(result[1].name).toBe('Alice');
     expect(result[2].name).toBe('Charlie');
-  })
+  });
 });

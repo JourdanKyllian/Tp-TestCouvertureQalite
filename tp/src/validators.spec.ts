@@ -1,4 +1,4 @@
-import { isValidAge, isValidEmail, isValidPassword } from "./validators";
+import { isValidAge, isValidEmail, isValidPassword } from './validators';
 
 /*
  * fonction isValidEmail(email)
@@ -13,7 +13,7 @@ describe('isValidEmail', () => {
     const input = 'user.name+tag@domain.co';
     const result = isValidEmail(input);
     expect(result).toBe(true);
-  })
+  });
   it('should return false when the email has no @ and no domain', () => {
     const input = 'invalid';
     const result = isValidEmail(input);
@@ -40,7 +40,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(false);
   });
   it('should return false when the email has two @', () => {
-    const input = 'user@e@xample.com'
+    const input = 'user@e@xample.com';
     const result = isValidEmail(input);
     expect(result).toBe(false);
   });
@@ -106,7 +106,7 @@ describe('isValidPassword', () => {
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('Au moins 1 caractere special');
   });
-})
+});
 
 /*
  * fonction isValidAge(age)
@@ -143,8 +143,8 @@ describe('IsValidAge', () => {
     expect(result).toBe(false);
   });
   it('should return false when the age is not a number', () => {
-    const input: string = "25";
-    const result = isValidAge(input as any);
+    const input: string = '25';
+    const result = isValidAge(input as unknown as number);
     expect(result).toBe(false);
   });
   it('should return false when the age is null', () => {
