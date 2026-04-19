@@ -136,6 +136,14 @@ describe('API Integration Tests', () => {
             expect(typeof response.body.id).toBe('string');
             expect(response.body.id.length).toBeGreaterThan(0);
         });
+        it('should generate different IDs for two consecutive orders', async () => {
+            const res1 = await request(app).post('/orders').send(validOrder);
+            const res2 = await request(app).post('/orders').send(validOrder);
+
+            expect(res1.status).toBe(201);
+            expect(res2.status).toBe(201);
+            expect(res1.body.id).not.toBe(res2.body.id);
+        });
     });
 });
 
