@@ -144,6 +144,13 @@ describe('API Integration Tests', () => {
             expect(res2.status).toBe(201);
             expect(res1.body.id).not.toBe(res2.body.id);
         });
+        it('should return 400 and not create an order if data is invalid (empty cart)', async () => {
+            const invalidOrder = { ...validOrder, items: [] };
+            const response = await request(app).post('/orders').send(invalidOrder);
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Panier vide');
+        });
     });
 });
 
