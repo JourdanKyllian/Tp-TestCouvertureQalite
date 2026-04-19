@@ -153,6 +153,10 @@ export function calculateOrderTotal(items: OrderItem[], distance: number, weight
 
     const deliveryFee = calculateDeliveryFee(distance, weight) || 0;
     const surge = calculateSurge(hour, dayOfWeek);
+    if (surge === 0) {
+        throw new Error('Boutique fermée');
+    }
+    
     const total = (subtotal - discount) + deliveryFee * surge;
 
     return { subtotal, discount, deliveryFee, surge, total };

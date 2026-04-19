@@ -215,4 +215,8 @@ describe(calculateOrderTotal, () => {
         expect(() => calculateOrderTotal(itemsWithZero, 5, 1, null, 15, 'Mardi'))
             .toThrow('Quantité invalide');
     });
+    it('should throw an error if the shop is closed (e.g., 23h)', () => {
+        expect(() => calculateOrderTotal(items, 5, 1, null, 23, 'Lundi'))
+            .toThrow('Boutique fermée');
+    });
 });
