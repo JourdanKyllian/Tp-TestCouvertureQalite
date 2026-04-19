@@ -48,7 +48,21 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Promo expirée');
         });
+        it('should return 400 for out of bounds distance (15km)', async () => {
+            const response = await request(app)
+                .post('/orders/simulate')
+                .send({ 
+                    items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+                    distance: 15, // Supérieur au MAX_DISTANCE (10)
+                    weight: 1,
+                    promoCode: null,
+                    hour: 15,
+                    dayOfWeek: 'Mardi'
+                });
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Hors zone de livraison');
+        });
     });
-    
 });
 
