@@ -132,6 +132,9 @@ export interface OrderTotal {
  * @returns 
  */
 export function calculateOrderTotal(items: OrderItem[], distance: number, weight: number, promoCode: string | null, hour: number, dayOfWeek: DayOfWeek): OrderTotal {
+    if (!items || items.length === 0) {
+        throw new Error('Panier vide');
+    }
     const subtotal = items.reduce((total, item) => {
         if (item.price < 0) {
             throw new Error('Prix négatif');

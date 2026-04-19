@@ -206,4 +206,8 @@ describe(calculateOrderTotal, () => {
         expect(() => calculateOrderTotal(itemsWithBug, 5, 1, null, 15, 'Mardi'))
             .toThrow('Prix négatif');
     });
+    it('should throw an error if the cart is empty', () => {
+        expect(() => calculateOrderTotal([], 5, 1, null, 15, 'Mardi'))
+            .toThrow('Panier vide');
+    });
 });
