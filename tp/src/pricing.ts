@@ -133,9 +133,16 @@ export interface OrderTotal {
  */
 export function calculateOrderTotal(items: OrderItem[], distance: number, weight: number, promoCode: string | null, hour: number, dayOfWeek: DayOfWeek): OrderTotal {
     const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    let discount = 0;
+    if (promoCode) {
+        const totalAfterPromo = applyPromoCode(subtotal, promoCode, PROMO_CODES);
+        discount = subtotal - totalAfterPromo;
+    }
+
     const deliveryFee = calculateDeliveryFee(distance, weight) || 0;
     const surge = calculateSurge(hour, dayOfWeek);
-    const total = subtotal + deliveryFee * surge;
+    const total = (subtotal - discount) + deliveryFee * surge;
 
-    return { subtotal, discount: 0, deliveryFee, surge, total };
+    return { subtotal, discount, deliveryFee, surge, total };
 }

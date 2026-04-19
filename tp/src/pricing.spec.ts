@@ -183,7 +183,7 @@ describe('calculateSurge', () => {
 
 describe(calculateOrderTotal, () => {
     const items = [{ name: "Pizza", price: 12.50, quantity: 2 }];
-    
+
     it('should calculate the correct total for a simple order (25€ + 5km + Tuesday 15h)', () => {
         const result = calculateOrderTotal(items, 5, 1, null, 15, 'Mardi');
         
@@ -194,5 +194,11 @@ describe(calculateOrderTotal, () => {
             surge: 1.0,
             total: 28.00
         });
+    });
+    it('should apply a 20% discount when a valid promo code is provided', () => {
+        const result = calculateOrderTotal(items, 5, 1, 'BIENVENUE20', 15, 'Mardi');
+        
+        expect(result.discount).toBe(5.00);
+        expect(result.total).toBe(23.00);
     });
 });
