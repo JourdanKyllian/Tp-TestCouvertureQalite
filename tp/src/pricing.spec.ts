@@ -47,95 +47,40 @@ describe('calculateDeliveryFee', () => {
  * applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[])
  */
 describe('applyPromoCode', () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDate = tomorrow.toISOString();
-
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayDate = yesterday.toISOString();
+    const mockPromos: PromoCode[] = [
+        { code: 'BIENVENUE20', type: 'percentage', value: 20, minOrder: 15, expiresAt: '2026-12-31' },
+        { code: 'REDUC5', type: 'fixed', value: 5, minOrder: 0, expiresAt: '2026-12-31' },
+        { code: 'EXPIRE', type: 'percentage', value: 10, minOrder: 0, expiresAt: '2020-01-01' },
+        { code: 'MINI20', type: 'fixed', value: 5, minOrder: 20, expiresAt: '2026-12-31' },
+        { code: 'REDUC50', type: 'fixed', value: 50, minOrder: 0, expiresAt: '2026-12-31' },
+        { code: 'GRATUIT', type: 'percentage', value: 100, minOrder: 0, expiresAt: '2026-12-31' }
+    ];
     it('should throw an error for an unknown promo code', () => {
         expect(() => applyPromoCode(50, 'CODE_INEXISTANT', [])).toThrow('Code inconnu');
     });
     it('should apply a 20% discount on a 50€ order', () => {
-        const promos: PromoCode[] = [{
-            "code": "BIENVENUE20",
-            "type": "percentage",
-            "value": 20,
-            "minOrder": 15.00,
-            "expiresAt": tomorrowDate
-        }];
-        expect(applyPromoCode(50, 'BIENVENUE20', promos)).toBe(40);
+        expect(applyPromoCode(50, 'BIENVENUE20', mockPromos)).toBe(40);
     });
     it('should apply a fixed discount of 5€ on a 30€ order', () => {
-        const promos: PromoCode[] = [{
-            code: 'REDUC5',
-            type: 'fixed',
-            value: 5,
-            minOrder: 0,
-            expiresAt: tomorrowDate
-        }];
-        expect(applyPromoCode(30, 'REDUC5', promos)).toBe(25);
+        expect(applyPromoCode(30, 'REDUC5', mockPromos)).toBe(25);
     });
     it('should refuse the code if subtotal is below minOrder', () => {
-        const promos: PromoCode[] = [{
-            code: 'MINI20',
-            type: 'fixed',
-            value: 5,
-            minOrder: 20,
-            expiresAt: tomorrowDate
-        }];
-        expect(() => applyPromoCode(15, 'MINI20', promos)).toThrow();
+        expect(() => applyPromoCode(15, 'MINI20', mockPromos)).toThrow();
     });
     it('should throw an error if the promo code is expired', () => {
-        const promos: PromoCode[] = [{
-            code: 'EXPIRE',
-            type: 'percentage',
-            value: 10,
-            minOrder: 0,
-            expiresAt: yesterdayDate
-        }];
-        expect(() => applyPromoCode(100, 'EXPIRE', promos)).toThrow('Promo expirée');
+        expect(() => applyPromoCode(100, 'EXPIRE', mockPromos)).toThrow('Promo expirée');
     });
     it('should not return a negative total if the discount exceeds the subtotal', () => {
-        const promos: PromoCode[] = [{
-            code: 'REDUC50',
-            type: 'fixed',
-            value: 50,
-            minOrder: 0,
-            expiresAt: tomorrowDate
-        }];
-        expect(applyPromoCode(30, 'REDUC50', promos)).toBe(0);
+        expect(applyPromoCode(30, 'REDUC50', mockPromos)).toBe(0);
     });
     it('should return 0€ for a 100% discount', () => {
-        const promos: PromoCode[] = [{
-            code: 'GRATUIT',
-            type: 'percentage',
-            value: 100,
-            minOrder: 0,
-            expiresAt: tomorrowDate
-        }];
-        expect(applyPromoCode(50, 'GRATUIT', promos)).toBe(0);
+        expect(applyPromoCode(50, 'GRATUIT', mockPromos)).toBe(0);
     });
     it('should accept the code if subtotal is exactly minOrder', () => {
-        const promos: PromoCode[] = [{
-            code: 'MINI20',
-            type: 'fixed',
-            value: 5,
-            minOrder: 20,
-            expiresAt: tomorrowDate
-        }];
-        expect(applyPromoCode(20, 'MINI20', promos)).toBe(15);
+        expect(applyPromoCode(20, 'MINI20', mockPromos)).toBe(15);
     });
     it('should return 0 if subtotal is 0', () => {
-        const promos: PromoCode[] = [{
-            code: 'REDUC5',
-            type: 'fixed',
-            value: 5,
-            minOrder: 0,
-            expiresAt: tomorrowDate
-        }];
-        expect(applyPromoCode(0, 'REDUC5', promos)).toBe(0);
+        expect(applyPromoCode(0, 'REDUC5', mockPromos)).toBe(0);
     });
     it('should throw an error if subtotal is negative', () => {
         expect(() => applyPromoCode(-10, 'BIENVENUE20', [])).toThrow();

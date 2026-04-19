@@ -42,12 +42,11 @@ export function calculateDeliveryFee(distance: number, weight: number): number |
  * @param promoCodes 
  * @returns 
  */
-export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[]): number {
+export function applyPromoCode(subtotal: number, promoCode: string, promoCodes: PromoCode[], now: Date = new Date()): number {
     if (subtotal < 0) {throw new Error('Le sous-total ne peut pas être négatif');}
     const promo = promoCodes.find((p) => p.code === promoCode);
     if (!promo) { throw new Error('Code inconnu'); }
 
-    const now = new Date();
     const expiryDate = new Date(promo.expiresAt);
     if (now > expiryDate) {
         throw new Error('Promo expirée');
