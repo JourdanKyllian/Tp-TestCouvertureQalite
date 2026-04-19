@@ -206,6 +206,17 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Promo expirée');
         });
+        it('should return 400 if subtotal is below the minimum order amount', async () => {
+            const response = await request(app)
+                .post('/promo/validate')
+                .send({
+                    promoCode: 'MINI20',
+                    subtotal: 15
+                });
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Promo non applicable');
+        });
     });
 });
 

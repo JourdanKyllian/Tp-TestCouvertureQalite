@@ -110,6 +110,13 @@ export const PROMO_CODES: PromoCode[] = [
         value: 10,
         minOrder: 0,
         expiresAt: "2020-01-01" // Date passée
+    },
+    {
+        code: "MINI20", // On ajoute ce code pour que l'API le connaisse !
+        type: "fixed",
+        value: 5,
+        minOrder: 20,
+        expiresAt: "2026-12-31"
     }
 ];
 
