@@ -228,6 +228,54 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(404);
             expect(response.body.error).toBe('Code inconnu');
         });
+        it('should return 400 if no promo code is provided in the request body', async () => {
+            const response = await request(app)
+                .post('/promo/validate')
+                .send({
+                    subtotal: 50
+                });
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Code manquant');
+        });
+        
+        
+    });
+    describe('GET /orders/:id', () => {
+        it('should return 200 and the order when ID exists', async () => {
+            const createRes = await request(app).post('/orders').send({
+                items: [{ name: "Pizza", price: 15, quantity: 1 }],
+                distance: 2, weight: 1, promoCode: null, hour: 14, dayOfWeek: 'Lundi'
+            });
+            const id = createRes.body.id;
+
+            const response = await request(app).get(`/orders/${id}`);
+            
+            expect(response.status).toBe(200);
+            expect(response.body.id).toBe(id);
+        });
+        it('should return 404 when order ID does not exist', async () => {
+            const response = await request(app).get('/orders/non-existent-id');
+            
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe('Commande introuvable');
+        });
+        it('should return the correct order structure', async () => {
+            const createRes = await request(app).post('/orders').send({
+                items: [{ name: "Test", price: 10, quantity: 1 }],
+                distance: 1, weight: 1, promoCode: null, hour: 12, dayOfWeek: 'Mardi'
+            });
+            
+            const response = await request(app).get(`/orders/${createRes.body.id}`);
+
+            expect(response.body).toHaveProperty('id');
+            expect(response.body).toHaveProperty('subtotal');
+            expect(response.body).toHaveProperty('discount');
+            expect(response.body).toHaveProperty('deliveryFee');
+            expect(response.body).toHaveProperty('surge');
+            expect(response.body).toHaveProperty('total');
+            expect(Array.isArray(response.body.items)).toBe(true);
+        });
     });
 });
 
