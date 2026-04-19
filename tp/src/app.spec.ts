@@ -63,6 +63,21 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Hors zone de livraison');
         });
+        it('should return 400 if the shop is closed (23h)', async () => {
+            const response = await request(app)
+                .post('/orders/simulate')
+                .send({ 
+                    items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+                    distance: 5,
+                    weight: 1,
+                    promoCode: null,
+                    hour: 23, // La boutique ferme à 22h
+                    dayOfWeek: 'Lundi'
+                });
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Boutique fermée');
+        });
     });
 });
 
