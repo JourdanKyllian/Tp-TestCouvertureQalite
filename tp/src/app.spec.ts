@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app, { resetOrders } from './app';
+import app, { orders, resetOrders } from './app';
 
 describe('API Integration Tests', () => {
     beforeEach(() => {
@@ -162,6 +162,23 @@ describe('API Integration Tests', () => {
             expect(getRes.status).toBe(200);
             expect(getRes.body.id).toBe(orderId);
             expect(getRes.body.total).toBe(28.00);
+        });
+        it('should return 404 when trying to retrieve an order that failed creation', async () => {
+            const bugOrder = {
+                items: [{ name: "Pizza Bug", price: -10, quantity: 1 }],
+                distance: 5, weight: 1, promoCode: null, hour: 15, dayOfWeek: 'Mardi'
+            };
+            await request(app).post('/orders').send(bugOrder);
+
+            const getRes = await request(app).get('/orders/1'); 
+            expect(getRes.status).toBe(404);
+        });
+        it('should ensure the internal orders array remains empty after a failed validation', async () => {
+            const bugOrder = { items: [], distance: 5, weight: 1, promoCode: null, hour: 15, dayOfWeek: 'Mardi' };
+            
+            await request(app).post('/orders').send(bugOrder);
+
+            expect(orders.length).toBe(0);
         });
     });
 });

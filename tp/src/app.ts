@@ -16,7 +16,7 @@ export interface Order extends OrderTotal {
     items: OrderItem[];
 }
 
-let orders: Order[] = [];
+export let orders: Order[] = [];
 
 export const resetOrders = () => { orders = []; };
 
