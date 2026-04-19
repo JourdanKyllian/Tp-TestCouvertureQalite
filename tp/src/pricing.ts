@@ -164,5 +164,11 @@ export function calculateOrderTotal(items: OrderItem[], distance: number, weight
     
     const total = (subtotal - discount) + deliveryFee * surge;
 
-    return { subtotal, discount, deliveryFee, surge, total };
+    return { 
+        subtotal: Math.round(subtotal * 100) / 100, 
+        discount: Math.round(discount * 100) / 100, 
+        deliveryFee: Math.round(deliveryFee * 100) / 100, 
+        surge, 
+        total: Math.round(total * 100) / 100 
+    };
 }

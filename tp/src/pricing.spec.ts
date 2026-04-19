@@ -223,4 +223,19 @@ describe(calculateOrderTotal, () => {
         expect(() => calculateOrderTotal(items, 15, 1, null, 15, 'Lundi'))
             .toThrow('Hors zone de livraison');
     });
+    it('should apply the weekend surge multiplier (1.8) on delivery fee', () => {
+        const result = calculateOrderTotal(items, 5, 1, null, 20, 'Vendredi');
+        
+        expect(result.surge).toBe(1.8);
+        expect(result.deliveryFee).toBe(3.00);
+        expect(result.total).toBe(30.40);
+    });
+    it('should round all values to 2 decimal places', () => {
+    const complexItems = [{ name: "Pizza Gourmet", price: 12.57, quantity: 1 }];
+    const result = calculateOrderTotal(complexItems, 5.5, 1, null, 12.5, 'Mardi');
+    
+    expect(result.total).toBe(16.80);
+    expect(result.subtotal).toBe(12.57);
+    expect(result.deliveryFee).toBe(3.25);
+});
 });
