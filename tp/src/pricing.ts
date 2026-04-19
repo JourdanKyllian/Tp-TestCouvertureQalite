@@ -103,6 +103,13 @@ export const PROMO_CODES: PromoCode[] = [
         value: 20,
         minOrder: 15.00,
         expiresAt: "2026-12-31"
+    },
+    {
+        code: "EXPIRE", // Ajout du code pour le test
+        type: "percentage",
+        value: 10,
+        minOrder: 0,
+        expiresAt: "2020-01-01" // Date passée
     }
 ];
 

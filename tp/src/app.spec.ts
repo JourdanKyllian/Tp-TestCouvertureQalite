@@ -33,6 +33,21 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Panier vide');
         });
+        it('should return 400 for an expired promo code', async () => {
+            const response = await request(app)
+                .post('/orders/simulate')
+                .send({ 
+                    items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+                    distance: 5,
+                    weight: 1,
+                    promoCode: 'EXPIRE', // Ce code doit être dans ta liste mais expiré
+                    hour: 15,
+                    dayOfWeek: 'Mardi'
+                }); 
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Promo expirée');
+        });
     });
     
 });
