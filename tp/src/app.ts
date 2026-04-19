@@ -21,7 +21,7 @@ let orders: Order[] = [];
 export const resetOrders = () => { orders = []; };
 
 /**
- * ROUTE 1 : POST /orders/simulate
+ * POST /orders/simulate
  * Calculer le prix total d'une commande
  */
 app.post('/orders/simulate', (req: Request, res: Response) => {
@@ -29,6 +29,30 @@ app.post('/orders/simulate', (req: Request, res: Response) => {
         const { items, distance, weight, promoCode, hour, dayOfWeek } = req.body;
         const result = calculateOrderTotal(items, distance, weight, promoCode, hour, dayOfWeek);
         res.json(result);
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+/**
+ * POST /orders
+ * Enregistrer une commande en mémoire
+ */
+app.post('/orders', (req: Request, res: Response) => {
+    try {
+        const { items, distance, weight, promoCode, hour, dayOfWeek } = req.body;
+        
+        const pricing = calculateOrderTotal(items, distance, weight, promoCode, hour, dayOfWeek);
+        
+        const newOrder: Order = {
+            id: crypto.randomUUID(),
+            items,
+            ...pricing
+        };
+        
+        orders.push(newOrder);
+        
+        res.status(201).json(newOrder);
     } catch (error: any) {
         res.status(400).json({ error: error.message });
     }

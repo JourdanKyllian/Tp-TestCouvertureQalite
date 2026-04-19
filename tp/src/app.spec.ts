@@ -113,5 +113,29 @@ describe('API Integration Tests', () => {
             expect(response.body.total).toBe(30.40);
         });
     });
+
+    describe('POST /orders', () => {
+        const validOrder = {
+            items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+            distance: 5,
+            weight: 1,
+            promoCode: null,
+            hour: 15,
+            dayOfWeek: 'Mardi'
+        };
+
+        it('should create an order and return 201 with a unique ID', async () => {
+            const response = await request(app)
+                .post('/orders')
+                .send(validOrder);
+
+            expect(response.status).toBe(201);
+            expect(response.body).toHaveProperty('id');
+            expect(response.body.total).toBe(28.00);
+            // On vérifie que l'ID est bien une chaîne non vide
+            expect(typeof response.body.id).toBe('string');
+            expect(response.body.id.length).toBeGreaterThan(0);
+        });
+    });
 });
 
