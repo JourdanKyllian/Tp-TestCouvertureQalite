@@ -139,6 +139,9 @@ export function calculateOrderTotal(items: OrderItem[], distance: number, weight
         if (item.price < 0) {
             throw new Error('Prix négatif');
         }
+        if (item.quantity <= 0) {
+            throw new Error('Quantité invalide');
+        }
         return total + item.price * item.quantity;
     }, 0);
 

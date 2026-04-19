@@ -210,4 +210,9 @@ describe(calculateOrderTotal, () => {
         expect(() => calculateOrderTotal([], 5, 1, null, 15, 'Mardi'))
             .toThrow('Panier vide');
     });
+    it('should throw an error if an item has a quantity of 0 or less', () => {
+    const itemsWithZero = [{ name: "Pizza Fantôme", price: 12.50, quantity: 0 }];
+        expect(() => calculateOrderTotal(itemsWithZero, 5, 1, null, 15, 'Mardi'))
+            .toThrow('Quantité invalide');
+    });
 });
