@@ -181,5 +181,20 @@ describe('API Integration Tests', () => {
             expect(orders.length).toBe(0);
         });
     });
+
+    describe('POST /promo/validate', () => {
+        it('should return 200 and the new price for a valid promo code', async () => {
+            const response = await request(app)
+                .post('/promo/validate')
+                .send({
+                    promoCode: 'BIENVENUE20',
+                    subtotal: 50
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body.isValid).toBe(true);
+            expect(response.body.newPrice).toBe(40);
+        });
+    });
 });
 

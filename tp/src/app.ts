@@ -72,4 +72,27 @@ app.get('/orders/:id', (req: Request, res: Response) => {
     res.json(order);
 });
 
+/**
+ * POST /promo/validate
+ * Vérifier la validité d'un code sans passer de commande
+ */
+app.post('/promo/validate', (req: Request, res: Response) => {
+    try {
+        const { promoCode, subtotal } = req.body;
+
+        if (!promoCode) {
+            return res.status(400).json({ error: 'Code manquant' });
+        }
+
+        const newPrice = applyPromoCode(subtotal, promoCode, PROMO_CODES);
+        
+        res.json({
+            isValid: true,
+            newPrice: newPrice
+        });
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 export default app;
