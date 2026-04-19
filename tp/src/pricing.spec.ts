@@ -231,11 +231,25 @@ describe(calculateOrderTotal, () => {
         expect(result.total).toBe(30.40);
     });
     it('should round all values to 2 decimal places', () => {
-    const complexItems = [{ name: "Pizza Gourmet", price: 12.57, quantity: 1 }];
-    const result = calculateOrderTotal(complexItems, 5.5, 1, null, 12.5, 'Mardi');
-    
-    expect(result.total).toBe(16.80);
-    expect(result.subtotal).toBe(12.57);
-    expect(result.deliveryFee).toBe(3.25);
-});
+        const complexItems = [{ name: "Pizza Gourmet", price: 12.57, quantity: 1 }];
+        const result = calculateOrderTotal(complexItems, 5.5, 1, null, 12.5, 'Mardi');
+        
+        expect(result.total).toBe(16.80);
+        expect(result.subtotal).toBe(12.57);
+        expect(result.deliveryFee).toBe(3.25);
+    });
+    it('should apply surge only to delivery fee, not to subtotal', () => {
+        const simpleItem = [{ name: "Pizza Test", price: 10.00, quantity: 1 }];
+        const result = calculateOrderTotal(simpleItem, 2, 1, null, 14, 'Dimanche');
+        
+        expect(result.total).toBe(12.40);
+        expect(result.subtotal).toBe(10.00);
+    });
+    it('should apply the lunch rush multiplier (1.3) correctly on Tuesday 12h30', () => {
+        const result = calculateOrderTotal(items, 5, 1, null, 12.5, 'Mardi');
+        
+        expect(result.surge).toBe(1.3);
+        expect(result.deliveryFee).toBe(3.00);
+        expect(result.total).toBe(28.90);
+    });
 });
