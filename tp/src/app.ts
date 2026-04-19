@@ -58,4 +58,18 @@ app.post('/orders', (req: Request, res: Response) => {
     }
 });
 
+/**
+ * GET /orders/:id
+ * Récupérer une commande par son ID
+ */
+app.get('/orders/:id', (req: Request, res: Response) => {
+    const order = orders.find(o => o.id === req.params.id);
+    
+    if (!order) {
+        return res.status(404).json({ error: 'Commande introuvable' });
+    }
+    
+    res.json(order);
+});
+
 export default app;

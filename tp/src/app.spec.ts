@@ -151,6 +151,18 @@ describe('API Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Panier vide');
         });
+        it('should be able to retrieve the created order via GET /orders/:id', async () => {
+            const createRes = await request(app).post('/orders').send({
+                items: [{ name: "Pizza", price: 12.50, quantity: 2 }],
+                distance: 5, weight: 1, promoCode: null, hour: 15, dayOfWeek: 'Mardi'
+            });
+            const orderId = createRes.body.id;
+            const getRes = await request(app).get(`/orders/${orderId}`);
+
+            expect(getRes.status).toBe(200);
+            expect(getRes.body.id).toBe(orderId);
+            expect(getRes.body.total).toBe(28.00);
+        });
     });
 });
 
