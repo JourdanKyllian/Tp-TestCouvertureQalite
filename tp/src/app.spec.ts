@@ -195,6 +195,17 @@ describe('API Integration Tests', () => {
             expect(response.body.isValid).toBe(true);
             expect(response.body.newPrice).toBe(40);
         });
+        it('should return 400 for an expired promo code', async () => {
+            const response = await request(app)
+                .post('/promo/validate')
+                .send({
+                    promoCode: 'EXPIRE',
+                    subtotal: 100
+                });
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Promo expirée');
+        });
     });
 });
 
